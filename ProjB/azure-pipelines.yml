@@ -1,0 +1,32 @@
+pool:
+  name: Default
+  demands:
+  - npm
+  - msbuild
+  - visualstudio
+  - vstest
+
+trigger:
+- master
+
+steps:
+- task: NuGetToolInstaller@1
+  displayName: 'Use NuGet 5.0.2'
+  inputs:
+    versionSpec: 5.0.2
+
+- task: PublishSymbols@2
+  displayName: 'Publish symbols path'
+  inputs:
+    SymbolsFolder: '$(Build.BinariesDirectory)'
+    SearchPattern: |
+     **\*.pdb
+     !**\vc*.pdb
+    SymbolServerType: TeamServices
+    SymbolsProduct: ProjB
+
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish Pipeline Artifact'
+  inputs:
+    artifactName: 'drop'
+    targetPath: '$(Build.ArtifactStagingDirectory)'
