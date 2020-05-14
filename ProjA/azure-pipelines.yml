@@ -1,10 +1,5 @@
 pool:
   name: Default
-  demands:
-  - npm
-  - msbuild
-  - visualstudio
-  - vstest
 
 trigger:
 - master
